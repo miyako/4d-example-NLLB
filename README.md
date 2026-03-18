@@ -1,9 +1,41 @@
 ## [facebook/nllb-200-distilled-600M](https://huggingface.co/facebook/nllb-200-distilled-600M)
 
-||`max_position_embeddings`|`max_length`
-|-|-:|-:|
-|nllb-200-distilled-600M|`1024`|`200`|
-|nllb-200-distilled-1.3B|`1024`|`200`|
+```4d
+var $OpenAI : cs.AIKit.OpenAI
+
+var $customHeaders : Object
+$customHeaders:={}
+
+var $ChatCompletionsParameters : Object
+$ChatCompletionsParameters:={}
+$ChatCompletionsParameters.input:="The cat sat on the mat"
+$ChatCompletionsParameters.from:="eng_Latn"
+$ChatCompletionsParameters.to:="fra_Latn"
+
+/*
+	
+	over-ride AI Kit behaviour
+	
+*/
+
+$ChatCompletionsParameters.body:=Formula from string("$0:={messages: Null; input: This.input; from: This.from; to: This.to}")
+
+$OpenAI:=cs.AIKit.OpenAI.new({customHeaders: $customHeaders})
+$OpenAI.baseURL:="http://127.0.0.1:8080/v1"
+var $ChatCompletionsResult : cs.AIKit.OpenAIChatCompletionsResult
+$ChatCompletionsResult:=$OpenAI.chat.completions.create(Null; $ChatCompletionsParameters)
+
+var $translations : Collection
+$translations:=$ChatCompletionsResult.request.response.body.translations
+
+If ($translations#Null)
+	var $text : Text
+	$text:=$translations.at(0).text.at(0)
+	ALERT($text)
+End if 
+```
+
+<img width="480" height="159" alt="Screenshot 2026-03-18 at 22 59 47" src="https://github.com/user-attachments/assets/4d3476cf-012f-4df6-bf67-65b0c96d93eb" />
 
 ## Languages
 
