@@ -69,3 +69,5 @@ End if
   {"nllb_vi",  "__vie_Latn__"}, {"nllb_zh",  "__zho_Hans__"},
   {"nllb_zt",  "__zho_Hant__"}
 ```
+
+https://miyako.github.io/CTranslate2/translate
